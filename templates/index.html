@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Filmes</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header class="topo">
+        <h1>🎬 Catálogo de Filmes</h1>
+        <p>Busque um filme pelo título</p>
+
+        <form method="post" class="busca">
+            <input type="text" name="titulo" placeholder="Ex.: Harry Potter" required>
+            <button type="submit">Buscar</button>
+        </form>
+    </header>
+
+    <main>
+        {% if erro %}
+            <p class="erro">{{ erro }}</p>
+        {% endif %}
+
+        {% if filmes %}
+            <section class="grade">
+                {% for filme in filmes %}
+                    <article class="card">
+                        {% if filme['poster_path'] %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ filme['poster_path'] }}" alt="Pôster de {{ filme['title'] }}" loading="lazy">
+                        {% else %}
+                            <div class="sem-poster">Sem pôster</div>
+                        {% endif %}
+                        <div class="info">
+                            <h2>{{ filme['title'] }}</h2>
+                            <p>
+                                {% if filme['release_date'] %}{{ filme['release_date'][:4] }}{% else %}Sem data{% endif %}
+                                ·
+                                {% if filme['vote_count'] %}⭐ {{ '%.1f'|format(filme['vote_average']) }}{% else %}Sem nota{% endif %}
+                            </p>
+                            <p class="sinopse">
+                                {% if filme['overview'] %}{{ filme['overview'] }}{% else %}Sem sinopse disponível.{% endif %}
+                            </p>
+                        </div>
+                    </article>
+                {% endfor %}
+            </section>
+        {% endif %}
+    </main>
+
+    <footer class="rodape">
+        Este produto usa a API do <a href="https://www.themoviedb.org/" target="_blank"

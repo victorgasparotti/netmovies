@@ -7,12 +7,14 @@ load_dotenv()
 
 chave_api=os.getenv("API_KEY")
 
-
-
-url = 'https://www.omdbapi.com/'
-parametros = {'apikey':chave_api, 's': 'Star Wars'}
+url = 'https://api.themoviedb.org/3/search/movie'
+parametros = {'api_key':chave_api, 'query': 'Gdcsd', 'language': 'pt-BR'}
 resposta = requests.get(url, params=parametros)
 dados = resposta.json()
 
-for dado in dados['Search']:
-    print(dado['Title'], dado['Year'], dado['Poster'])
+url_imagem='https://image.tmdb.org/t/p/w500'
+
+for dado in dados['results']:
+    endereco_completo = url_imagem+dado['poster_path']
+    print(endereco_completo)
+print(dados)
