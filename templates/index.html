@@ -113,7 +113,15 @@
         const modalFilme = document.getElementById('detalhe-filme');
         const fecharModal = modalFilme.querySelector('.fechar-detalhe');
 
+        let posicaoScroll = 0;
+
         function abrirDetalhes(card) {
+            posicaoScroll = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = '-' + posicaoScroll + 'px';
+            document.body.style.left = '0';
+            document.body.style.right = '0';
+            document.body.style.width = '100%';
             document.getElementById('detalhe-titulo').textContent = card.dataset.title;
             document.getElementById('detalhe-sinopse').textContent = card.dataset.overview;
             document.getElementById('detalhe-ano').textContent = card.dataset.year;
@@ -143,7 +151,17 @@
             });
         });
 
+        function fecharDetalhes() {
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.left = '';
+            document.body.style.right = '';
+            document.body.style.width = '';
+            window.scrollTo(0, posicaoScroll);
+        }
+
         fecharModal.addEventListener('click', () => modalFilme.close());
+        modalFilme.addEventListener('close', fecharDetalhes);
         modalFilme.addEventListener('click', (event) => {
             if (event.target === modalFilme) modalFilme.close();
         });
