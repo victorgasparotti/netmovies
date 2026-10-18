@@ -93,6 +93,27 @@ http://127.0.0.1:5000
 
 > O modo de depuração está habilitado no código para desenvolvimento local. Antes de publicar a aplicação em produção, desative o `debug`.
 
+## 🌐 Acesse o projeto
+
+Você pode testar a versão publicada do NetMovies aqui:
+
+**[Abrir NetMovies](https://netmovies-henna.vercel.app)**
+
+## 💡 Ideias para futuras melhorias
+
+Algumas funcionalidades que podem ser adicionadas em próximas versões:
+
+- **Filmes favoritos:** permitir que o usuário salve títulos para consultar depois.
+- **Filtros e ordenação:** filtrar por gênero, ano de lançamento e nota, além de ordenar os resultados.
+- **Página de detalhes:** exibir informações mais completas sobre cada filme, elenco, duração e gêneros.
+- **Paginação:** permitir navegar por mais resultados de pesquisa.
+- **Busca por categorias:** explorar filmes populares, mais bem avaliados e lançamentos.
+- **Melhorias de acessibilidade:** aprimorar a navegação por teclado, os rótulos e o contraste.
+- **Testes automatizados:** criar testes para a busca, o tratamento de erros e as rotas da aplicação.
+- **Configuração de produção:** revisar variáveis de ambiente e desativar o modo de depuração em ambiente publicado.
+
+Essas ideias são possibilidades para evoluir o projeto; elas ainda não fazem parte necessariamente da versão atual.
+
 ## 🧭 Como usar o site
 
 1. Abra o NetMovies no navegador.
