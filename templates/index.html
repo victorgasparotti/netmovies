@@ -1,52 +1,102 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo de Filmes</title>
-    <link rel="stylesheet" href="/style.css">
+    <meta name="theme-color" content="#090b10">
+    <meta name="description" content="Encontre seus filmes favoritos no NetMovies. Pesquise títulos e descubra informações, avaliações e sinopses.">
+    <title>NetMovies — descubra seu próximo filme</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <header class="topo">
-        <h1>NetMovies</h1>
-        <p>Busque um filme pelo título</p>
+        <a class="marca" href="/" aria-label="NetMovies — página inicial">
+            <span class="marca-icone" aria-hidden="true">▶</span>
+            <span>Net<span>Movies</span></span>
+        </a>
 
-        <form method="post" class="busca">
-            <input type="text" name="titulo" placeholder="Ex.: Harry Potter" required>
-            <button type="submit">Buscar</button>
+        <p class="selo">Seu próximo filme começa aqui</p>
+        <h1>Grandes histórias.<br><span>Uma busca.</span></h1>
+        <p class="subtitulo">Encontre filmes, confira avaliações e descubra sua próxima sessão favorita.</p>
+
+        <form method="post" class="busca" role="search">
+            <input
+                type="search"
+                name="titulo"
+                placeholder="Digite o nome de um filme..."
+                aria-label="Nome do filme"
+                autocomplete="off"
+                required
+            >
+            <button type="submit">Buscar filmes <span aria-hidden="true">→</span></button>
         </form>
     </header>
 
     <main>
         {% if erro %}
-            <p class="erro">{{ erro }}</p>
+            <section class="estado erro" role="alert">
+                <div class="estado-icone" aria-hidden="true">!</div>
+                <h2>Não encontramos esse filme</h2>
+                <p>Confira se o título foi digitado corretamente e tente novamente.</p>
+            </section>
         {% endif %}
 
         {% if filmes %}
-            <section class="grade">
-                {% for filme in filmes %}
-                    <article class="card">
-                        {% if filme['poster_path'] %}
-                            <img src="https://image.tmdb.org/t/p/w500{{ filme['poster_path'] }}" alt="Pôster de {{ filme['title'] }}" loading="lazy">
-                        {% else %}
-                            <div class="sem-poster">Sem pôster</div>
-                        {% endif %}
-                        <div class="info">
-                            <h2>{{ filme['title'] }}</h2>
-                            <p>
-                                {% if filme['release_date'] %}{{ filme['release_date'][:4] }}{% else %}Sem data{% endif %}
-                                ·
-                                {% if filme['vote_count'] %}⭐ {{ '%.1f'|format(filme['vote_average']) }}{% else %}Sem nota{% endif %}
-                            </p>
-                            <p class="sinopse">
-                                {% if filme['overview'] %}{{ filme['overview'] }}{% else %}Sem sinopse disponível.{% endif %}
-                            </p>
-                        </div>
-                    </article>
-                {% endfor %}
+            <section aria-labelledby="titulo-resultados">
+                <div class="cabecalho-resultados">
+                    <div>
+                        <h2 id="titulo-resultados">Resultados da busca</h2>
+                        <p>Escolha um título para conferir os detalhes.</p>
+                    </div>
+                    <span class="contador">{{ filmes|length }} filme(s)</span>
+                </div>
+
+                <div class="grade">
+                    {% for filme in filmes %}
+                        <article class="card">
+                            <div class="poster">
+                                {% if filme['poster_path'] %}
+                                    <img
+                                        src="https://image.tmdb.org/t/p/w500{{ filme['poster_path'] }}"
+                                        alt="Pôster de {{ filme['title'] }}"
+                                        loading="lazy"
+                                    >
+                                {% else %}
+                                    <div class="sem-poster">Pôster indisponível</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="info">
+                                <h3>{{ filme['title'] }}</h3>
+                                <div class="metadados">
+                                    <span>{% if filme['release_date'] %}{{ filme['release_date'][:4] }}{% else %}Ano indisponível{% endif %}</span>
+                                    <span aria-hidden="true">·</span>
+                                    {% if filme['vote_count'] and filme['vote_average'] %}
+                                        <span class="nota">★ {{ '%.1f'|format(filme['vote_average']) }}</span>
+                                    {% else %}
+                                        <span>Sem avaliação</span>
+                                    {% endif %}
+                                </div>
+                                <p class="sinopse">{% if filme['overview'] %}{{ filme['overview'] }}{% else %}Sinopse ainda não disponível em português.{% endif %}</p>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            </section>
+        {% elif not erro %}
+            <section class="estado">
+                <div class="estado-icone" aria-hidden="true">⌕</div>
+                <h2>O que vamos assistir hoje?</h2>
+                <p>Pesquise pelo título de um filme usando a barra acima. Sua próxima história favorita pode estar a uma busca de distância.</p>
             </section>
         {% endif %}
     </main>
 
     <footer class="rodape">
-        Este produto usa a API do <a href="https://www.themoviedb.org/" target="_blank"
+        <p>Feito para quem ama cinema.</p>
+        <p>Dados e imagens fornecidos por <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer">The Movie Database (TMDB)</a>.</p>
+    </footer>
+</body>
+</html>
