@@ -55,7 +55,7 @@
 
                 <div class="grade">
                     {% for filme in filmes %}
-                        <article class="card">
+                        <article class="card" tabindex="0" role="button" aria-haspopup="dialog" aria-label="Ver sinopse completa de {{ filme['title'] }}" data-title="{{ filme['title'] }}" data-overview="{{ filme['overview'] or 'Sinopse ainda não disponível em português.' }}" data-poster="{% if filme['poster_path'] %}https://image.tmdb.org/t/p/w500{{ filme['poster_path'] }}{% endif %}" data-year="{% if filme['release_date'] %}{{ filme['release_date'][:4] }}{% else %}Ano indisponível{% endif %}" data-rating="{% if filme['vote_count'] and filme['vote_average'] %}★ {{ '%.1f'|format(filme['vote_average']) }}{% else %}Sem avaliação{% endif %}">
                             <div class="poster">
                                 {% if filme['poster_path'] %}
                                     <img
@@ -93,6 +93,61 @@
             </section>
         {% endif %}
     </main>
+
+
+    <dialog class="detalhe-filme" id="detalhe-filme" aria-labelledby="detalhe-titulo">
+        <button class="fechar-detalhe" type="button" aria-label="Fechar detalhes">×</button>
+        <div class="detalhe-conteudo">
+            <img class="detalhe-poster" id="detalhe-poster" alt="">
+            <div class="detalhe-texto">
+                <p class="detalhe-selo">DETALHES DO FILME</p>
+                <h2 id="detalhe-titulo"></h2>
+                <p class="detalhe-metadados"><span id="detalhe-ano"></span><span aria-hidden="true">·</span><span id="detalhe-nota"></span></p>
+                <h3>Sinopse completa</h3>
+                <p class="detalhe-sinopse" id="detalhe-sinopse"></p>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        const modalFilme = document.getElementById('detalhe-filme');
+        const fecharModal = modalFilme.querySelector('.fechar-detalhe');
+
+        function abrirDetalhes(card) {
+            document.getElementById('detalhe-titulo').textContent = card.dataset.title;
+            document.getElementById('detalhe-sinopse').textContent = card.dataset.overview;
+            document.getElementById('detalhe-ano').textContent = card.dataset.year;
+            document.getElementById('detalhe-nota').textContent = card.dataset.rating;
+
+            const poster = document.getElementById('detalhe-poster');
+            if (card.dataset.poster) {
+                poster.src = card.dataset.poster;
+                poster.alt = 'Pôster de ' + card.dataset.title;
+                poster.hidden = false;
+            } else {
+                poster.removeAttribute('src');
+                poster.alt = '';
+                poster.hidden = true;
+            }
+
+            modalFilme.showModal();
+        }
+
+        document.querySelectorAll('.card').forEach((card) => {
+            card.addEventListener('click', () => abrirDetalhes(card));
+            card.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    abrirDetalhes(card);
+                }
+            });
+        });
+
+        fecharModal.addEventListener('click', () => modalFilme.close());
+        modalFilme.addEventListener('click', (event) => {
+            if (event.target === modalFilme) modalFilme.close();
+        });
+    </script>
 
     <footer class="rodape">
         <p>Feito para quem ama cinema.</p>
