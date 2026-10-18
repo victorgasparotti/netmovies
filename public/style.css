@@ -270,7 +270,8 @@ main{
   font-weight:700;
   line-height:1.35;
   -webkit-box-orient:vertical;
-  -webkit-line-clamp:2
+  -webkit-line-clamp:2;
+  line-clamp: 2;
 }
 .metadados{
   display:flex;
@@ -292,7 +293,8 @@ main{
   font-size:12px;
   line-height:1.65;
   -webkit-box-orient:vertical;
-  -webkit-line-clamp:4
+  -webkit-line-clamp:4;
+  line-clamp: 4;
 }
 .estado{
   margin:24px 0;
@@ -383,7 +385,8 @@ main{
     font-size:13px
   }
   .sinopse{
-    -webkit-line-clamp:3
+    -webkit-line-clamp:3;
+    line-clamp: 3;
   }
 }
 @media(max-width:520px){
